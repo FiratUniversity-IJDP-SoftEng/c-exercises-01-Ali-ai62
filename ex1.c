@@ -1,24 +1,53 @@
 
 
 
+#include <cs50.h>
 #include <stdio.h>
-
-// Function declaration
-void sayHello(char name[]);
+#include <string.h>
+#include <math.h>
 
 int main(void)
 {
-    char name[20];
-    printf("Enter your name: ");
-    scanf("%s", name);
+    string text = get_string("Text: ");
 
-    sayHello(name);
+    int letters = 0;
+    int words = 0;
+    int sentences = 0;
 
-    return 0;
-}
+    for (int i = 0; i < strlen(text); i++)
+    {
+        if ((text[i] >= 'a' && text[i] <= 'z') || (text[i] >= 'A' && text[i] <= 'Z'))
+        {
+            letters++;
+        }
+        else if (text[i] == ' ')
+        {
+            words++;
+        }
+        else if (text[i] == '.' || text[i] == '!' || text[i] == '?')
+        {
+            sentences++;
+        }
+    }
 
-// Function definition
-void sayHello(char name[])
-{
-    printf("Hello, %s!\n", name);
+    // Add 1 for the last word
+    words++;
+
+    float L = (letters / (float) words) * 100;
+    float S = (sentences / (float) words) * 100;
+
+    float index = 0.0588 * L - 0.296 * S - 15.8;
+
+    if (index < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else if (index >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else
+    {
+        printf("Grade %.0f\n", round(index));
+    }
 }
